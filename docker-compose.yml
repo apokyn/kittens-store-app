@@ -1,0 +1,22 @@
+version: "3"
+services:
+  app:
+    tty: true
+    stdin_open: true
+    command: ["sh", "-c", "bundle exec rackup --port 1234 --host 0.0.0.0"]
+    image: apokynboroda/kittens-store:latest
+    depends_on:
+      - db
+    ports:
+      - 1234:1234
+    environment:
+      DATABASE_URL: postgresql://app:pass@db:5432
+    volumes:
+      - ./:/app/
+  db:
+    image: postgres:14.0-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
+    ports:
+      - 5432:5432

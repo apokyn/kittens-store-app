@@ -2,6 +2,7 @@ pg: &pg
   adapter: postgresql
   encoding: unicode
   pool: 30
+  url: <%= ENV['DATABASE_URL'] %>
 
 development:
   <<: *pg

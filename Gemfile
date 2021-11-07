@@ -1,4 +1,4 @@
-ruby '2.4.9'
+ruby '2.7.4'
 
 source 'https://rubygems.org'
 
@@ -6,7 +6,7 @@ gem 'sinatra'
 gem 'rack'
 gem 'rake'
 
-gem 'pg', '~> 0.18'
+gem 'pg'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 

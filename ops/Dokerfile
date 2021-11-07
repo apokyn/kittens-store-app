@@ -1,0 +1,28 @@
+# image without multistage optimization waight 587mb
+# image with multistage optimization waights 62.6mb
+FROM ruby:2.7.4-alpine3.14 AS GEMS
+
+LABEL maintainer="andriy.p@matic.com"
+
+RUN apk add --update --no-cache \
+    build-base=~0.5 \
+    postgresql-dev=~13
+
+COPY Gemfile Gemfile.lock /app/
+
+WORKDIR /app
+
+RUN bundle install --jobs 10 --retry 5 \
+    && rm -rf /usr/local/bundle/cache/* \
+    && find /usr/local/bundle/gems/ -name "*.c" -name "*.o" -delete
+
+FROM ruby:2.7.4-alpine3.14
+
+RUN apk add --update --no-cache postgresql-client
+
+COPY --from=GEMS /usr/local/bundle/ /usr/local/bundle/
+
+COPY . /app/
+
+WORKDIR /app
+
